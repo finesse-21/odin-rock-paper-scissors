@@ -13,10 +13,7 @@ function getHumanChoice() {
     return alert("You entered wrong weapon :(");
 }
 
-let humanScore = 0;
-let computerScore = 0;
-
-function playRound(humanChoice, computerChoice) {
+function playRound(humanChoice, computerChoice, humanScore, computerScore) {
     if (humanChoice === computerChoice) {
         return console.log(`It is a draw! ${humanChoice} to ${computerChoice}`);
     }
@@ -24,14 +21,27 @@ function playRound(humanChoice, computerChoice) {
         || humanChoice === "scissors" && computerChoice === "rock"
         || humanChoice === "rock" && computerChoice === "paper"
     ) {
-        computerScore += 1;
-        return console.log(`You Lose! ${computerChoice} beats ${humanChoice}`);
+        console.log(`You Lose! ${computerChoice} beats ${humanChoice}. Score is ${humanScore} to ${computerScore + 1}`);
+        return 0;        
     }
-    humanScore += 1;
-    return console.log(`You Win! ${humanChoice} beats ${computerChoice}`);
+    console.log(`You Win! ${humanChoice} beats ${computerChoice}. Score is ${humanScore + 1} to ${computerScore}`);
+    return 1;
 }
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
-
-playRound(humanSelection, computerSelection);
+function playGame() {
+    let humanScore = 0;
+    let computerScore = 0;
+    let round = 0;
+    for (let i = 0; i < 5; i++) {
+        const humanSelection = getHumanChoice();
+        const computerSelection = getComputerChoice();
+        round = playRound(humanSelection, computerSelection, humanScore, computerScore);
+        if (round === 0 ) {computerScore += 1;}
+        else if (round === 1) {humanScore += 1;}        
+    }
+    if (humanScore > computerScore) {console.log("You won the game!"); }
+    else if (humanScore < computerScore) {console.log("You lose the game!");}
+    else {console.log("It's a draw!")}
+    return console.log(`Score is ${humanScore} to ${computerScore}`)
+}
+playGame();
